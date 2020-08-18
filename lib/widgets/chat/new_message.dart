@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class NewMessage extends StatefulWidget {
   @override
@@ -28,7 +29,15 @@ class _NewMessageState extends State<NewMessage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Neumorphic(
+      style: NeumorphicStyle(
+        shape: NeumorphicShape.flat,
+        lightSource: LightSource.topLeft,
+        color: NeumorphicColors.background,
+        boxShape: NeumorphicBoxShape.roundRect(
+          BorderRadius.circular(12),
+        ),
+      ),
       margin: EdgeInsets.only(
         top: 8,
       ),
@@ -36,23 +45,58 @@ class _NewMessageState extends State<NewMessage> {
       child: Row(
         children: <Widget>[
           Expanded(
-            child: TextField(
-              controller: _controller,
-              textCapitalization: TextCapitalization.sentences,
-              enableSuggestions: true,
-              autocorrect: true,
-              decoration: InputDecoration(labelText: 'Type your message here'),
-              onChanged: (value) {
-                setState(() {
-                  _enteredMessage = value;
-                });
-              },
+            child: Neumorphic(
+              style: NeumorphicStyle(
+                depth: -5,
+                lightSource: LightSource.topLeft,
+                color: NeumorphicColors.background,
+                boxShape: NeumorphicBoxShape.roundRect(
+                  BorderRadius.circular(12),
+                ),
+              ),
+              child: TextField(
+                controller: _controller,
+                textCapitalization: TextCapitalization.sentences,
+                enableSuggestions: true,
+                autocorrect: true,
+                decoration: InputDecoration(
+                    labelText: 'Type your message here',
+                    contentPadding: EdgeInsets.only(
+                      left: 12,
+                    )),
+                onChanged: (value) {
+                  setState(() {
+                    _enteredMessage = value;
+                  });
+                },
+              ),
             ),
           ),
-          IconButton(
-            icon: Icon(Icons.send),
-            onPressed: _enteredMessage.trim().isEmpty ? null : _sendMessage,
-            color: Theme.of(context).primaryColor,
+          SizedBox(
+            width: 8,
+          ),
+          Neumorphic(
+            style: NeumorphicStyle(
+              shape: NeumorphicShape.convex,
+              lightSource: LightSource.topLeft,
+              color: NeumorphicColors.background,
+              boxShape: NeumorphicBoxShape.circle(),
+            ),
+            child: IconButton(
+              icon: NeumorphicIcon(
+                Icons.send,
+                style: NeumorphicStyle(
+                  shape: NeumorphicShape.convex,
+                  lightSource: LightSource.topLeft,
+                  color: NeumorphicColors.accent,
+                  boxShape: NeumorphicBoxShape.roundRect(
+                    BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+              onPressed: _enteredMessage.trim().isEmpty ? null : _sendMessage,
+              color: Theme.of(context).primaryColor,
+            ),
           )
         ],
       ),
